@@ -1,6 +1,13 @@
 from abc import ABC, abstractmethod
 
+class IArithmeticsMult(ABC):
+   @abstractmethod
+   def multiplication(self, A: float, B: float) -> float:
+      pass
 
+class ArithmeticsMult(IArithmeticsMult):
+   def multiplication(self, A: float, B: float) -> float:
+      return A * B
 
 class IArithmeticDiff(ABC):
     @abstractmethod
@@ -19,4 +26,3 @@ class IArithmeticsAdd(ABC):
 class ArithmeticsAdd(IArithmeticsAdd):
     def Addition(self, A: float, B: float) -> float:
         return A + B
-
