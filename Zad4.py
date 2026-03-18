@@ -1,5 +1,16 @@
 from abc import ABC, abstractmethod
 
+class IArithmeticsDiv(ABC):
+    @abstractmethod
+    def division(self, a: float, b: float) -> float:
+        pass
+
+class ArithmeticDiv(IArithmeticsDiv):
+    def division(self, a: float, b: float) -> float:
+        if b == 0:
+            raise ValueError("Dividing by zero is not allowed")
+        return a / b
+      
 class IArithmeticsMult(ABC):
    @abstractmethod
    def multiplication(self, A: float, B: float) -> float:
@@ -11,18 +22,18 @@ class ArithmeticsMult(IArithmeticsMult):
 
 class IArithmeticDiff(ABC):
     @abstractmethod
-    def Difference(self,A: float,B: float) -> float:
+    def difference(self,A: float,B: float) -> float:
         pass
 
 class ArithmeticDiff(IArithmeticDiff):
-    def Difference(self, A:float,B:float) -> float:
+    def difference(self, A:float,B:float) -> float:
         return A - B
 
 class IArithmeticsAdd(ABC):
     @abstractmethod
-    def Addition(self, A: float, B: float) -> float:
+    def addition(self, A: float, B: float) -> float:
         pass
 
 class ArithmeticsAdd(IArithmeticsAdd):
-    def Addition(self, A: float, B: float) -> float:
+    def addition(self, A: float, B: float) -> float:
         return A + B
