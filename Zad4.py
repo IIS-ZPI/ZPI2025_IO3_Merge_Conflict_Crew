@@ -31,6 +31,7 @@ class ArithmeticsMult(IArithmeticsMult):
       return A * B
 
 # subtraction
+#sub
 class IArithmeticDiff(ABC):
     @abstractmethod
     def difference(self,A: float,B: float) -> float:
