@@ -7,6 +7,7 @@ class IArithmeticsDiv(ABC):
 
 class ArithmeticDiv(IArithmeticsDiv):
     def division(self, a: float, b: float) -> float:
+        #sprawdzenie wyjątku dzielenia przez zero
         if b == 0:
             raise ValueError("Dividing by zero is not allowed")
         return a / b
