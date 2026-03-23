@@ -57,6 +57,5 @@ class IArithmeticsPow(ABC):
         pass
 #Ta funckja poteguje
 class ArithmeticsPow(IArithmeticsPow):
-    #poteguje
     def power(self, A: float, B: float) -> float:
         return A ** B
