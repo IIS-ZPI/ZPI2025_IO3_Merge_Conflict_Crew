@@ -43,6 +43,7 @@ class IArithmeticsAdd(ABC):
 
 class ArithmeticsAdd(IArithmeticsAdd):
     def addition(self, A: float, B: float) -> float:
+        #Return of adding A and B
         return A + B
 
 class IArithmeticsPow(ABC):
