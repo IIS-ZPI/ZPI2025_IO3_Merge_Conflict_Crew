@@ -10,7 +10,8 @@ class ArithmeticDiv(IArithmeticsDiv):
         if b == 0:
             raise ValueError("Dividing by zero is not allowed")
         return a / b
-      
+
+# multiplication
 class IArithmeticsMult(ABC):
    @abstractmethod
    def multiplication(self, A: float, B: float) -> float:
