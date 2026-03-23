@@ -6,6 +6,7 @@ class IArithmeticsDiv(ABC):
         pass
 
 class ArithmeticDiv(IArithmeticsDiv):
+    #funkcja służy do dzielenia dwóch liczb
     def division(self, a: float, b: float) -> float:
         if b == 0:
             raise ValueError("Dividing by zero is not allowed")
