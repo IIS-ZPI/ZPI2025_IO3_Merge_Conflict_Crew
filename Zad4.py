@@ -8,8 +8,10 @@ class IArithmeticsDiv(ABC):
 class ArithmeticDiv(IArithmeticsDiv):
     #funkcja służy do dzielenia dwóch liczb
     def division(self, a: float, b: float) -> float:
+        #sprawdzenie wyjątku dzielenia przez zero
         if b == 0:
             raise ValueError("Dividing by zero is not allowed")
+        #zwraca wynik dzielenia
         return a / b
       
 class IArithmeticsMult(ABC):
