@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+# division
 class IArithmeticsDiv(ABC):
     @abstractmethod
     def division(self, a: float, b: float) -> float:
