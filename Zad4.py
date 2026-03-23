@@ -36,6 +36,7 @@ class IArithmeticsAdd(ABC):
         pass
 
 class ArithmeticsAdd(IArithmeticsAdd):
+    #Definition of the addition function
     def addition(self, A: float, B: float) -> float:
         return A + B
 
