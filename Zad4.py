@@ -51,6 +51,7 @@ class ArithmeticsAdd(IArithmeticsAdd):
         #Return of adding A and B
         return A + B
 
+#Power
 class IArithmeticsPow(ABC):
     @abstractmethod
     def power(self, A: float, B: float) -> float:
