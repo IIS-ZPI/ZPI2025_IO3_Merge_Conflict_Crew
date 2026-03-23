@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 # division
+#div
 class IArithmeticsDiv(ABC):
     @abstractmethod
     def division(self, a: float, b: float) -> float:
@@ -32,7 +33,7 @@ class IArithmeticDiff(ABC):
 class ArithmeticDiff(IArithmeticDiff):
     def difference(self, A:float,B:float) -> float:
         return A - B
-
+#add
 class IArithmeticsAdd(ABC):
     @abstractmethod
     def addition(self, A: float, B: float) -> float:
