@@ -21,6 +21,8 @@ class ArithmeticsMult(IArithmeticsMult):
    def multiplication(self, A: float, B: float) -> float:
       return A * B
 
+# subtraction
+#sub
 class IArithmeticDiff(ABC):
     @abstractmethod
     def difference(self,A: float,B: float) -> float:
