@@ -40,7 +40,7 @@ class IArithmeticsAdd(ABC):
     @abstractmethod
     def addition(self, A: float, B: float) -> float:
         pass
-
+# This function adds two numbers together
 class ArithmeticsAdd(IArithmeticsAdd):
     def addition(self, A: float, B: float) -> float:
         return A + B
