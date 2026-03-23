@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 
+#Ta funckja dzieli
+
+
 # division
+
 class IArithmeticsDiv(ABC):
     @abstractmethod
     def division(self, a: float, b: float) -> float:
@@ -45,7 +49,7 @@ class IArithmeticsPow(ABC):
     @abstractmethod
     def power(self, A: float, B: float) -> float:
         pass
-
+#Ta funckja poteguje
 class ArithmeticsPow(IArithmeticsPow):
     def power(self, A: float, B: float) -> float:
         return A ** B
