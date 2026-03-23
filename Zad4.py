@@ -13,6 +13,7 @@ class ArithmeticDiv(IArithmeticsDiv):
         return a / b
 
 # multiplication
+#mul
 class IArithmeticsMult(ABC):
    @abstractmethod
    def multiplication(self, A: float, B: float) -> float:
