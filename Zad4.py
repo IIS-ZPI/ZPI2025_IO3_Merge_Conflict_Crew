@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+#dzielenie
 class IArithmeticsDiv(ABC):
     @abstractmethod
     def division(self, a: float, b: float) -> float:
@@ -19,7 +19,7 @@ class IArithmeticsMult(ABC):
 class ArithmeticsMult(IArithmeticsMult):
    def multiplication(self, A: float, B: float) -> float:
       return A * B
-
+#odejmowanie
 class IArithmeticDiff(ABC):
     @abstractmethod
     def difference(self,A: float,B: float) -> float:
