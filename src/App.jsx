@@ -4,6 +4,7 @@ import Toolbar from './components/dashboard/Toolbar';
 import SessionSummary from './components/dashboard/SessionSummary';
 import StatisticalMeasures from './components/dashboard/StatisticalMeasures';
 import DistributionAnalysis from './components/dashboard/DistributionAnalysis';
+import NbpApiTester from './components/NbpApiTester';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           Export Data
         </button>
       </div>
+
+      <NbpApiTester />
     </MainLayout>
   );
 }
