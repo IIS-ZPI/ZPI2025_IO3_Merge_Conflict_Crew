@@ -1,4 +1,5 @@
 import React from 'react';
+import { calculateSessions } from '../../utils/calculations';
 
 const StatCard = ({ icon, value, label, type }) => {
   const isUp = type === 'up';
@@ -21,7 +22,9 @@ const StatCard = ({ icon, value, label, type }) => {
   );
 };
 
-const SessionSummary = () => {
+const SessionSummary = ({ rates = [] }) => {
+  const { growth, decline, noChange } = calculateSessions(rates);
+
   return (
     <div className="flex flex-col h-full">
       <div className="section-title">
@@ -30,9 +33,9 @@ const SessionSummary = () => {
       </div>
       <div className="section-box flex-1 flex items-center">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-[15px] w-full">
-          <StatCard icon="arrow_upward" value="124" label="Growth" type="up" />
-          <StatCard icon="arrow_downward" value="118" label="Decline" type="down" />
-          <StatCard icon="remove" value="10" label="No Change" type="unchanged" />
+          <StatCard icon="arrow_upward" value={growth} label="Growth" type="up" />
+          <StatCard icon="arrow_downward" value={decline} label="Decline" type="down" />
+          <StatCard icon="remove" value={noChange} label="No Change" type="unchanged" />
         </div>
       </div>
     </div>
