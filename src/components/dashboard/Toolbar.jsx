@@ -21,13 +21,13 @@ const Toolbar = ({ onGenerate, loading }) => {
             onChange={(e) => setBaseCurrency(e.target.value)}
             className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue"
           >
-            <option value="USD" className="bg-card-inner text-text-main">Dolar am. (USD)</option>
+            <option value="USD" className="bg-card-inner text-text-main">US Dollar (USD)</option>
             <option value="EUR" className="bg-card-inner text-text-main">Euro (EUR)</option>
-            <option value="GBP" className="bg-card-inner text-text-main">Funt bryt. (GBP)</option>
-            <option value="CHF" className="bg-card-inner text-text-main">Frank szw. (CHF)</option>
-            <option value="JPY" className="bg-card-inner text-text-main">Jen jap. (JPY)</option>
-            <option value="CZK" className="bg-card-inner text-text-main">Korona czes. (CZK)</option>
-            <option value="NOK" className="bg-card-inner text-text-main">Korona nor. (NOK)</option>
+            <option value="GBP" className="bg-card-inner text-text-main">British Pound (GBP)</option>
+            <option value="CHF" className="bg-card-inner text-text-main">Swiss Franc (CHF)</option>
+            <option value="JPY" className="bg-card-inner text-text-main">Japanese Yen (JPY)</option>
+            <option value="CZK" className="bg-card-inner text-text-main">Czech Koruna (CZK)</option>
+            <option value="NOK" className="bg-card-inner text-text-main">Norwegian Krone (NOK)</option>
           </select>
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">
@@ -37,13 +37,13 @@ const Toolbar = ({ onGenerate, loading }) => {
             onChange={(e) => setQuoteCurrency(e.target.value)}
             className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue"
           >
-            <option value="USD" className="bg-card-inner text-text-main">Dolar am. (USD)</option>
+            <option value="USD" className="bg-card-inner text-text-main">US Dollar (USD)</option>
             <option value="EUR" className="bg-card-inner text-text-main">Euro (EUR)</option>
-            <option value="GBP" className="bg-card-inner text-text-main">Funt bryt. (GBP)</option>
-            <option value="CHF" className="bg-card-inner text-text-main">Frank szw. (CHF)</option>
-            <option value="JPY" className="bg-card-inner text-text-main">Jen jap. (JPY)</option>
-            <option value="CZK" className="bg-card-inner text-text-main">Korona czes. (CZK)</option>
-            <option value="NOK" className="bg-card-inner text-text-main">Korona nor. (NOK)</option>
+            <option value="GBP" className="bg-card-inner text-text-main">British Pound (GBP)</option>
+            <option value="CHF" className="bg-card-inner text-text-main">Swiss Franc (CHF)</option>
+            <option value="JPY" className="bg-card-inner text-text-main">Japanese Yen (JPY)</option>
+            <option value="CZK" className="bg-card-inner text-text-main">Czech Koruna (CZK)</option>
+            <option value="NOK" className="bg-card-inner text-text-main">Norwegian Krone (NOK)</option>
           </select>
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">

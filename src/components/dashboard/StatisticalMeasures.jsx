@@ -1,4 +1,9 @@
-import React from 'react';
+import { 
+  calculateMedian, 
+  calculateMode, 
+  calculateStandardDeviation, 
+  calculateCoefficientOfVariation 
+} from '../../utils/calculations';
 
 const MeasureCard = ({ title, value }) => (
   <div className="bg-card-inner rounded-lg p-5 border border-border h-full flex flex-col justify-center">
@@ -11,7 +16,22 @@ const MeasureCard = ({ title, value }) => (
   </div>
 );
 
-const StatisticalMeasures = () => {
+const StatisticalMeasures = ({ rates = [] }) => {
+  const values = rates.map(r => r.mid).filter(val => typeof val === 'number' && !isNaN(val));
+  const hasValues = values.length > 0;
+
+  const median = hasValues ? calculateMedian(values) : null;
+  const mode = hasValues ? calculateMode(values) : null;
+  const stdDev = hasValues ? calculateStandardDeviation(values) : null;
+  const cv = hasValues ? calculateCoefficientOfVariation(values) : null;
+
+  const formatValue = (val, isPercentage = false) => {
+    if (val === null || val === undefined) return "-";
+    if (typeof val === 'string') return val;
+    if (isPercentage) return `${val.toFixed(2)}%`;
+    return val.toFixed(4);
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div className="section-title">
@@ -20,10 +40,10 @@ const StatisticalMeasures = () => {
       </div>
       <div className="section-box flex-1">
         <div className="grid grid-cols-2 gap-[15px] h-full">
-          <MeasureCard title="Median" value="1.0850" />
-          <MeasureCard title="Mode" value="1.0825" />
-          <MeasureCard title="Std Deviation" value="0.0142" />
-          <MeasureCard title="Coeff. Var." value="0.85%" />
+          <MeasureCard title="Median" value={formatValue(median)} />
+          <MeasureCard title="Mode" value={formatValue(mode)} />
+          <MeasureCard title="Std Deviation" value={formatValue(stdDev)} />
+          <MeasureCard title="Coeff. Var." value={formatValue(cv, true)} />
         </div>
       </div>
     </div>
@@ -31,3 +51,4 @@ const StatisticalMeasures = () => {
 };
 
 export default StatisticalMeasures;
+
