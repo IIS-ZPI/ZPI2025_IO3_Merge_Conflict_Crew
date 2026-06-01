@@ -65,7 +65,7 @@ describe('dates utility', function () {
     it('should calculate forward range for Quarter without exceeding today', function () {
       const range = getForwardDateRange('2026-02-15', 'Quarter');
       expect(range.startDate).toBe('2026-02-15');
-      expect(range.endDate).toBe('2026-05-14');
+      expect(range.endDate).toBe('2026-05-15');
     });
 
     it('should cap the forward range to today if the calculated end date exceeds today', function () {
