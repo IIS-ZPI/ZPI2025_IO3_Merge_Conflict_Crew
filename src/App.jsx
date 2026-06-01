@@ -29,7 +29,6 @@ function App() {
 
     try {
       if (baseCurrency === quoteCurrency) {
-        // Just fetch one and set rates to 1? Not super useful, but let's handle it
         const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
         setRates(baseData.rates.map(r => ({ effectiveDate: r.effectiveDate, mid: 1 })));
       } else {
@@ -49,7 +48,7 @@ function App() {
   return (
     <MainLayout>
       <Toolbar onGenerate={handleGenerate} loading={loading} />
-      
+
       {error && (
         <div className="text-status-red bg-status-red/10 border border-status-red/20 p-3 rounded-lg mt-4 text-sm flex items-center gap-2">
           <i className="material-icons text-[1.2rem]">error_outline</i>
@@ -66,10 +65,10 @@ function App() {
         </div>
       </div>
 
-      <DistributionAnalysis />
+      <DistributionAnalysis baseCurrency={activeBaseCurrency} quoteCurrency={activeQuoteCurrency} />
 
       <div className="mt-4 flex justify-end">
-        <button 
+        <button
           onClick={() => setIsExportModalOpen(true)}
           disabled={rates.length === 0 || loading}
           className="btn-custom px-4 flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
@@ -80,7 +79,7 @@ function App() {
         </button>
       </div>
 
-      <ExportModal 
+      <ExportModal
         isOpen={isExportModalOpen}
         onClose={() => setIsExportModalOpen(false)}
         rates={rates}
