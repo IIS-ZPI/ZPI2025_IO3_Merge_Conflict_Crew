@@ -9,7 +9,7 @@ import {
   Cell
 } from 'recharts';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const range = payload[0].payload.range;
     return (

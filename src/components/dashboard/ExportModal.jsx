@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { generateCSV, generateJSON, triggerDownload } from '../../utils/export';
 
 const ExportModal = ({
@@ -11,13 +11,9 @@ const ExportModal = ({
 }) => {
   const [exportType, setExportType] = useState('both');
   const [exportFormat, setExportFormat] = useState('json');
-  const [fileName, setFileName] = useState('');
 
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const name = `${baseCurrency}_${quoteCurrency}_${timeframe}_${exportType}_${today}.${exportFormat}`;
-    setFileName(name);
-  }, [baseCurrency, quoteCurrency, timeframe, exportType, exportFormat]);
+  const today = new Date().toISOString().split('T')[0];
+  const fileName = `${baseCurrency}_${quoteCurrency}_${timeframe}_${exportType}_${today}.${exportFormat}`;
 
   if (!isOpen) return null;
 
@@ -29,16 +25,13 @@ const ExportModal = ({
       type: exportType
     };
 
-    let content = '';
-    let mimeType = '';
+    const content = exportFormat === 'json'
+      ? generateJSON(rates, options)
+      : generateCSV(rates, options);
 
-    if (exportFormat === 'json') {
-      content = generateJSON(rates, options);
-      mimeType = 'application/json';
-    } else {
-      content = generateCSV(rates, options);
-      mimeType = 'text/csv';
-    }
+    const mimeType = exportFormat === 'json'
+      ? 'application/json'
+      : 'text/csv';
 
     triggerDownload(content, fileName, mimeType);
     onClose();
