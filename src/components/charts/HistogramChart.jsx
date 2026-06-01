@@ -11,7 +11,6 @@ import {
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    // payload[0].payload contains the original data object
     const range = payload[0].payload.range;
     return (
       <div style={{
@@ -45,17 +44,17 @@ const HistogramChart = ({ data = [] }) => {
         barCategoryGap="10%"
       >
         <CartesianGrid vertical={false} stroke="#232735" />
-        <XAxis 
-          dataKey="label" 
+        <XAxis
+          dataKey="label"
           tick={{ fill: '#8a92a5', fontSize: 11, fontFamily: 'Inter' }}
           tickMargin={15}
           angle={-45}
           textAnchor="end"
           axisLine={{ stroke: '#2c3142' }}
           tickLine={false}
-          label={{ 
-            value: 'VALUE CHANGE', 
-            position: 'insideBottom', 
+          label={{
+            value: 'VALUE CHANGE',
+            position: 'insideBottom',
             offset: -35,
             fill: '#59637a',
             fontSize: 10,
@@ -64,14 +63,14 @@ const HistogramChart = ({ data = [] }) => {
             letterSpacing: 1
           }}
         />
-        <YAxis 
+        <YAxis
           tick={{ fill: '#59637a', fontSize: 11, fontFamily: 'monospace' }}
           axisLine={false}
           tickLine={false}
           allowDecimals={false}
-          label={{ 
-            value: 'SESSIONS COUNT', 
-            angle: -90, 
+          label={{
+            value: 'SESSIONS COUNT',
+            angle: -90,
             position: 'insideLeft',
             fill: '#59637a',
             fontSize: 10,
