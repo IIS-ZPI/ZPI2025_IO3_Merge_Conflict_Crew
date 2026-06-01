@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MainLayout from './components/layout/MainLayout';
 import Toolbar from './components/dashboard/Toolbar';
 import SessionSummary from './components/dashboard/SessionSummary';
@@ -54,7 +54,7 @@ function App() {
           <SessionSummary rates={rates} />
         </div>
         <div className="w-full xl:w-7/12 px-3 flex flex-col">
-          <StatisticalMeasures />
+          <StatisticalMeasures rates={rates} />
         </div>
       </div>
 
