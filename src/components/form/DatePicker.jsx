@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const DatePicker = ({ placeholder = "Select date", onChange, className = "" }) => {
   const [hasValue, setHasValue] = useState(false);

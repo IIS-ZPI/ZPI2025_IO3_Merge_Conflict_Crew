@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const Toolbar = ({ onGenerate, loading }) => {
   const [baseCurrency, setBaseCurrency] = useState('EUR');

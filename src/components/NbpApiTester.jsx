@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNbpApi } from '../services/nbpApi.jsx';
 
 const NbpApiTester = () => {
@@ -16,32 +16,32 @@ const NbpApiTester = () => {
     <div className="section-box mt-6">
       <div className="flex items-center gap-2 mb-4">
         <i className="material-icons text-accent-blue text-[1.5rem]">swap_horiz</i>
-        <h2 className="text-[1.1rem] font-semibold text-text-main m-0">Test Połączenia z API NBP</h2>
+        <h2 className="text-[1.1rem] font-semibold text-text-main m-0">API NBP Connection Test</h2>
       </div>
 
       <div className="flex flex-wrap gap-4 mb-6 items-end">
         <div className="flex flex-col">
           <label className="text-[0.75rem] font-semibold text-text-muted uppercase tracking-[1.5px] mb-[8px]">
-            Waluta
+            Currency
           </label>
           <select
             className="bg-card-inner border border-border text-text-main p-2 rounded-lg focus:border-accent-blue focus:ring-1 focus:ring-accent-blue outline-none h-11 min-w-[150px] transition-colors"
             value={currency}
             onChange={e => setCurrency(e.target.value)}
           >
-            <option value="USD">Dolar am. (USD)</option>
-            <option value="EUR">Euro (EUR)</option>
-            <option value="GBP">Funt bryt. (GBP)</option>
-            <option value="CHF">Frank szw. (CHF)</option>
-            <option value="JPY">Jen jap. (JPY)</option>
-            <option value="CZK">Korona czes. (CZK)</option>
-            <option value="NOK">Korona nor. (NOK)</option>
+            <option value="USD">(USD)</option>
+            <option value="EUR">(EUR)</option>
+            <option value="GBP">(GBP)</option>
+            <option value="CHF">(CHF)</option>
+            <option value="JPY">(JPY)</option>
+            <option value="CZK">(CZK)</option>
+            <option value="NOK">(NOK)</option>
           </select>
         </div>
 
         <div className="flex flex-col">
           <label className="text-[0.75rem] font-semibold text-text-muted uppercase tracking-[1.5px] mb-[8px]">
-            Data od
+            Date from
           </label>
           <input
             type="date"
@@ -53,7 +53,7 @@ const NbpApiTester = () => {
 
         <div className="flex flex-col">
           <label className="text-[0.75rem] font-semibold text-text-muted uppercase tracking-[1.5px] mb-[8px]">
-            Data do
+            Date to
           </label>
           <input
             type="date"
@@ -71,7 +71,7 @@ const NbpApiTester = () => {
           {loading ? (
             <span className="flex items-center gap-2">
               <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-              Pobieranie...
+              Downloading
             </span>
           ) : (
             'Pobierz Kursy'
@@ -82,18 +82,18 @@ const NbpApiTester = () => {
       {error && (
         <div className="text-status-red bg-status-red/10 border border-status-red/20 p-3 rounded-lg mb-4 text-sm flex items-center gap-2">
           <i className="material-icons text-[1.2rem]">error_outline</i>
-          <span>Błąd: {error}</span>
+          <span>Error {error}</span>
         </div>
       )}
 
       {data && (
         <div className="mt-4 animate-fadeIn">
           <p className="mb-3 text-text-muted text-sm">
-            Status: Znaleziono <span className="font-bold text-accent-blue">{data.rates.length}</span> notowań dla waluty <span className="text-text-main font-semibold">{data.currency}</span> ({data.code}).
+            Status: found <span className="font-bold text-accent-blue">{data.rates.length}</span> currency notes <span className="text-text-main font-semibold">{data.currency}</span> ({data.code}).
           </p>
           <div className="max-h-64 overflow-y-auto border border-border rounded-lg bg-card-inner p-2 custom-scrollbar">
             {data.rates.length === 0 ? (
-              <div className="text-text-muted p-4 text-center text-sm">Brak danych dla wybranego przedziału w API NBP.</div>
+              <div className="text-text-muted p-4 text-center text-sm">No data for selected period in API NBP.</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 p-1">
                 {data.rates.map((rate, idx) => (

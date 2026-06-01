@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Navbar = () => {
   return (
     <div className="h-[70px] bg-card-inner border-b border-border flex items-center">

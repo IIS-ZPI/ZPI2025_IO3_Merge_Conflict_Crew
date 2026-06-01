@@ -1,4 +1,3 @@
-import React from 'react';
 import HistogramChart from '../charts/HistogramChart';
 import DistributionTable from '../tables/DistributionTable';
 import DatePicker from '../form/DatePicker';
