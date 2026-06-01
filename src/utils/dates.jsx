@@ -1,15 +1,15 @@
 export const getDateRange = (timeframe) => {
   const end = new Date();
-  const start = new Date();
+  const start = new Date(end);
 
   switch (timeframe) {
-    case '1W': start.setDate(end.getDate() - 7); break;
-    case '2W': start.setDate(end.getDate() - 14); break;
-    case '1M': start.setMonth(end.getMonth() - 1); break;
-    case '1Q': start.setMonth(end.getMonth() - 3); break;
-    case '6M': start.setMonth(end.getMonth() - 6); break;
-    case '1Y': start.setFullYear(end.getFullYear() - 1); break;
-    default: start.setDate(end.getDate() - 7);
+    case '1W': start.setUTCDate(end.getUTCDate() - 7); break;
+    case '2W': start.setUTCDate(end.getUTCDate() - 14); break;
+    case '1M': start.setUTCMonth(end.getUTCMonth() - 1); break;
+    case '1Q': start.setUTCMonth(end.getUTCMonth() - 3); break;
+    case '6M': start.setUTCMonth(end.getUTCMonth() - 6); break;
+    case '1Y': start.setUTCFullYear(end.getUTCFullYear() - 1); break;
+    default: start.setUTCDate(end.getUTCDate() - 7);
   }
 
   return {
@@ -19,13 +19,14 @@ export const getDateRange = (timeframe) => {
 };
 
 export const getForwardDateRange = (startDateStr, timeframe) => {
-  const start = new Date(startDateStr);
+  const [year, month, day] = startDateStr.split('-').map(Number);
+  const start = new Date(Date.UTC(year, month - 1, day));
   const end = new Date(start);
 
   switch (timeframe) {
-    case 'Month': end.setMonth(start.getMonth() + 1); break;
-    case 'Quarter': end.setMonth(start.getMonth() + 3); break;
-    default: end.setMonth(start.getMonth() + 1);
+    case 'Month': end.setUTCMonth(start.getUTCMonth() + 1); break;
+    case 'Quarter': end.setUTCMonth(start.getUTCMonth() + 3); break;
+    default: end.setUTCMonth(start.getUTCMonth() + 1);
   }
 
   const today = new Date();
