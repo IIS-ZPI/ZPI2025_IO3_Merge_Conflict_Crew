@@ -1,110 +1,94 @@
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip
-);
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const range = payload[0].payload.range;
+    return (
+      <div style={{
+        backgroundColor: 'rgba(22, 26, 35, 0.95)',
+        border: '1px solid #2c3142',
+        padding: '12px',
+        borderRadius: '4px'
+      }}>
+        <p style={{ margin: 0, color: '#ffffff', fontSize: '13px', fontFamily: 'Inter', fontWeight: '600', marginBottom: '4px' }}>
+          Range: {range}
+        </p>
+        <p style={{ margin: 0, color: '#5c7aff', fontSize: '15px', fontFamily: 'Inter', fontWeight: '700' }}>
+          {payload[0].value} days
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 const HistogramChart = ({ data = [] }) => {
-  const chartData = {
-    labels: data.map(item => item.label),
-    datasets: [
-      {
-        label: 'Days count',
-        data: data.map(item => item.count),
-        backgroundColor: data.map(item => item.mid ? '#7c94ff' : '#5c7aff'),
-        borderRadius: 4,
-        barPercentage: 0.85,
-        categoryPercentage: 0.9,
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: 'rgba(22, 26, 35, 0.95)',
-        titleColor: '#ffffff',
-        bodyColor: '#5c7aff',
-        borderColor: '#2c3142',
-        borderWidth: 1,
-        padding: 12,
-        titleFont: { size: 13, family: 'Inter', weight: '600' },
-        bodyFont: { size: 15, family: 'Inter', weight: '700' },
-        displayColors: false,
-        callbacks: {
-          title: function (context) {
-            const dataIndex = context[0].dataIndex;
-            return 'Range: ' + data[dataIndex].range;
-          },
-          label: function (context) {
-            return context.raw + ' days';
-          }
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'SESSIONS COUNT',
-          color: '#59637a',
-          font: { family: 'Inter', size: 10, weight: '700', letterSpacing: 1 }
-        },
-        ticks: {
-          color: '#59637a',
-          font: { family: 'monospace', size: 11 },
-          stepSize: 1,
-        },
-        grid: {
-          color: '#232735',
-          drawBorder: false,
-        }
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'VALUE CHANGE',
-          color: '#59637a',
-          font: { family: 'Inter', size: 10, weight: '700', letterSpacing: 1 },
-          padding: { top: 15 }
-        },
-        ticks: {
-          maxRotation: 45,
-          minRotation: 45,
-          color: '#8a92a5',
-          font: { family: 'Inter', size: 11 }
-        },
-        grid: {
-          display: false,
-          drawBorder: true,
-          borderColor: '#2c3142'
-        }
-      }
-    }
-  };
-
   if (!data || data.length === 0) {
     return null;
   }
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart
+        data={data}
+        margin={{ top: 20, right: 10, left: -20, bottom: 45 }}
+        barCategoryGap="10%"
+      >
+        <CartesianGrid vertical={false} stroke="#232735" />
+        <XAxis
+          dataKey="label"
+          tick={{ fill: '#8a92a5', fontSize: 11, fontFamily: 'Inter' }}
+          tickMargin={15}
+          angle={-45}
+          textAnchor="end"
+          axisLine={{ stroke: '#2c3142' }}
+          tickLine={false}
+          label={{
+            value: 'VALUE CHANGE',
+            position: 'insideBottom',
+            offset: -35,
+            fill: '#59637a',
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fontWeight: 700,
+            letterSpacing: 1
+          }}
+        />
+        <YAxis
+          tick={{ fill: '#59637a', fontSize: 11, fontFamily: 'monospace' }}
+          axisLine={false}
+          tickLine={false}
+          allowDecimals={false}
+          label={{
+            value: 'SESSIONS COUNT',
+            angle: -90,
+            position: 'insideLeft',
+            fill: '#59637a',
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fontWeight: 700,
+            letterSpacing: 1,
+            offset: 15
+          }}
+        />
+        <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} content={<CustomTooltip />} />
+        <Bar dataKey="count" radius={[4, 4, 4, 4]}>
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.mid ? '#7c94ff' : '#5c7aff'} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
 };
 
 export default HistogramChart;
