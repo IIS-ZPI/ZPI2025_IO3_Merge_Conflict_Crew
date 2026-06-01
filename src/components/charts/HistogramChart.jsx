@@ -16,19 +16,14 @@ ChartJS.register(
   Tooltip
 );
 
-const HistogramChart = () => {
-  const data = {
-    labels: [
-      '-0.0126', '-0.0107', '-0.0087', '-0.0068',
-      '-0.0049', '-0.0029', '-0.0010', '0.0010',
-      '0.0029', '0.0049', '0.0068', '0.0087',
-      '0.0107', '0.0126'
-    ],
+const HistogramChart = ({ data = [] }) => {
+  const chartData = {
+    labels: data.map(item => item.label),
     datasets: [
       {
         label: 'Days count',
-        data: [0, 0, 1, 4, 10, 7, 11, 0, 11, 8, 5, 1, 3, 1],
-        backgroundColor: '#5c7aff',
+        data: data.map(item => item.count),
+        backgroundColor: data.map(item => item.mid ? '#7c94ff' : '#5c7aff'),
         borderRadius: 4,
         barPercentage: 0.85,
         categoryPercentage: 0.9,
@@ -54,7 +49,8 @@ const HistogramChart = () => {
         displayColors: false,
         callbacks: {
           title: function (context) {
-            return 'Value: ' + context[0].label;
+            const dataIndex = context[0].dataIndex;
+            return 'Range: ' + data[dataIndex].range;
           },
           label: function (context) {
             return context.raw + ' days';
@@ -73,7 +69,8 @@ const HistogramChart = () => {
         },
         ticks: {
           color: '#59637a',
-          font: { family: 'monospace', size: 11 }
+          font: { family: 'monospace', size: 11 },
+          stepSize: 1,
         },
         grid: {
           color: '#232735',
@@ -103,7 +100,11 @@ const HistogramChart = () => {
     }
   };
 
-  return <Bar data={data} options={options} />;
+  if (!data || data.length === 0) {
+    return null;
+  }
+
+  return <Bar data={chartData} options={options} />;
 };
 
 export default HistogramChart;

@@ -17,3 +17,28 @@ export const getDateRange = (timeframe) => {
     endDate: end.toISOString().split('T')[0]
   };
 };
+
+export const getForwardDateRange = (startDateStr, timeframe) => {
+  const start = new Date(startDateStr);
+  const end = new Date(start);
+
+  switch (timeframe) {
+    case 'Month': end.setMonth(start.getMonth() + 1); break;
+    case 'Quarter': end.setMonth(start.getMonth() + 3); break;
+    default: end.setMonth(start.getMonth() + 1);
+  }
+
+  // Ensure end date doesn't exceed today
+  const today = new Date();
+  if (end > today) {
+    return {
+      startDate: start.toISOString().split('T')[0],
+      endDate: today.toISOString().split('T')[0]
+    };
+  }
+
+  return {
+    startDate: start.toISOString().split('T')[0],
+    endDate: end.toISOString().split('T')[0]
+  };
+};

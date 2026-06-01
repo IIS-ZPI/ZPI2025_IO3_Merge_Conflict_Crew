@@ -66,7 +66,7 @@ function App() {
         </div>
       </div>
 
-      <DistributionAnalysis />
+      <DistributionAnalysis baseCurrency={activeBaseCurrency} quoteCurrency={activeQuoteCurrency} />
 
       <div className="mt-4 flex justify-end">
         <button 
