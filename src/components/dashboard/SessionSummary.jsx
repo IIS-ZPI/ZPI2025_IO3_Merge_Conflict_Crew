@@ -1,4 +1,3 @@
-import React from 'react';
 import { calculateSessions } from '../../utils/calculations';
 
 const StatCard = ({ icon, value, label, type }) => {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const DistributionTable = () => {
   const data = [
     { range: '-0.0136 to -0.0116', count: 0 },
