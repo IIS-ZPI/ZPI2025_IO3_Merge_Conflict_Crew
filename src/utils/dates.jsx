@@ -28,7 +28,6 @@ export const getForwardDateRange = (startDateStr, timeframe) => {
     default: end.setMonth(start.getMonth() + 1);
   }
 
-  // Ensure end date doesn't exceed today
   const today = new Date();
   if (end > today) {
     return {

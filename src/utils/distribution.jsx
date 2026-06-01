@@ -14,21 +14,20 @@ export const calculateDistribution = (rates) => {
   const max = Math.max(...changes);
 
   if (min === max) {
-    return [{ 
-      range: `${min.toFixed(4)} to ${max.toFixed(4)}`, 
+    return [{
+      range: `${min.toFixed(4)} to ${max.toFixed(4)}`,
       label: `${min.toFixed(4)}`,
-      count: changes.length, 
-      min, 
-      max, 
-      mid: true 
+      count: changes.length,
+      min,
+      max,
+      mid: true
     }];
   }
 
-  const numBins = 14; 
-  // Add a tiny padding to maxAbs to prevent exact boundary float issues
+  const numBins = 14;
   const maxAbs = Math.max(Math.abs(min), Math.abs(max)) * 1.0001;
   const step = (maxAbs * 2) / numBins;
-  
+
   const bins = Array.from({ length: numBins }, (_, i) => {
     const binMin = -maxAbs + i * step;
     const binMax = binMin + step;
