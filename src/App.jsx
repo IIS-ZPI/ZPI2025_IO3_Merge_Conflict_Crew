@@ -66,7 +66,7 @@ function App() {
         </div>
       </div>
 
-      <DistributionAnalysis />
+      <DistributionAnalysis rates={rates} />
 
       <div className="mt-4 flex justify-end">
         <button 

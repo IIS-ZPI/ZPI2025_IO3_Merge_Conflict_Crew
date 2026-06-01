@@ -1,109 +1,112 @@
+import { useMemo } from 'react';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+  ResponsiveContainer,
+  Cell
+} from 'recharts';
+import { calculateDistribution } from '../../utils/calculations';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip
-);
-
-const HistogramChart = () => {
-  const data = {
-    labels: [
-      '-0.0126', '-0.0107', '-0.0087', '-0.0068',
-      '-0.0049', '-0.0029', '-0.0010', '0.0010',
-      '0.0029', '0.0049', '0.0068', '0.0087',
-      '0.0107', '0.0126'
-    ],
-    datasets: [
-      {
-        label: 'Days count',
-        data: [0, 0, 1, 4, 10, 7, 11, 0, 11, 8, 5, 1, 3, 1],
-        backgroundColor: '#5c7aff',
-        borderRadius: 4,
-        barPercentage: 0.85,
-        categoryPercentage: 0.9,
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div style={{
         backgroundColor: 'rgba(22, 26, 35, 0.95)',
-        titleColor: '#ffffff',
-        bodyColor: '#5c7aff',
-        borderColor: '#2c3142',
-        borderWidth: 1,
-        padding: 12,
-        titleFont: { size: 13, family: 'Inter', weight: '600' },
-        bodyFont: { size: 15, family: 'Inter', weight: '700' },
-        displayColors: false,
-        callbacks: {
-          title: function (context) {
-            return 'Value: ' + context[0].label;
-          },
-          label: function (context) {
-            return context.raw + ' days';
-          }
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'SESSIONS COUNT',
-          color: '#59637a',
-          font: { family: 'Inter', size: 10, weight: '700', letterSpacing: 1 }
-        },
-        ticks: {
-          color: '#59637a',
-          font: { family: 'monospace', size: 11 }
-        },
-        grid: {
-          color: '#232735',
-          drawBorder: false,
-        }
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'VALUE CHANGE',
-          color: '#59637a',
-          font: { family: 'Inter', size: 10, weight: '700', letterSpacing: 1 },
-          padding: { top: 15 }
-        },
-        ticks: {
-          maxRotation: 45,
-          minRotation: 45,
-          color: '#8a92a5',
-          font: { family: 'Inter', size: 11 }
-        },
-        grid: {
-          display: false,
-          drawBorder: true,
-          borderColor: '#2c3142'
-        }
-      }
-    }
-  };
+        border: '1px solid #2c3142',
+        padding: '12px',
+        borderRadius: '4px'
+      }}>
+        <p style={{ margin: 0, color: '#ffffff', fontSize: '13px', fontFamily: 'Inter', fontWeight: '600', marginBottom: '4px' }}>
+          Value: {label}
+        </p>
+        <p style={{ margin: 0, color: '#5c7aff', fontSize: '15px', fontFamily: 'Inter', fontWeight: '700' }}>
+          {payload[0].value} days
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
-  return <Bar data={data} options={options} />;
+const HistogramChart = ({ rates }) => {
+  const data = useMemo(() => {
+    if (!rates || rates.length < 2) {
+      return [
+        { name: '-0.0126', count: 0 },
+        { name: '-0.0107', count: 0 },
+        { name: '-0.0087', count: 1 },
+        { name: '-0.0068', count: 4 },
+        { name: '-0.0049', count: 10 },
+        { name: '-0.0029', count: 7 },
+        { name: '-0.0010', count: 11 },
+        { name: '0.0010', count: 0 },
+        { name: '0.0029', count: 11 },
+        { name: '0.0049', count: 8 },
+        { name: '0.0068', count: 5 },
+        { name: '0.0087', count: 1 },
+        { name: '0.0107', count: 3 },
+        { name: '0.0126', count: 1 }
+      ];
+    }
+    return calculateDistribution(rates, 14);
+  }, [rates]);
+
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart
+        data={data}
+        margin={{ top: 20, right: 10, left: -20, bottom: 45 }}
+        barCategoryGap="10%"
+      >
+        <CartesianGrid vertical={false} stroke="#232735" />
+        <XAxis
+          dataKey="name"
+          tick={{ fill: '#8a92a5', fontSize: 11, fontFamily: 'Inter' }}
+          tickMargin={15}
+          angle={-45}
+          textAnchor="end"
+          axisLine={{ stroke: '#2c3142' }}
+          tickLine={false}
+          label={{
+            value: 'VALUE CHANGE',
+            position: 'insideBottom',
+            offset: -35,
+            fill: '#59637a',
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fontWeight: 700,
+            letterSpacing: 1
+          }}
+        />
+        <YAxis
+          tick={{ fill: '#59637a', fontSize: 11, fontFamily: 'monospace' }}
+          axisLine={false}
+          tickLine={false}
+          label={{
+            value: 'SESSIONS COUNT',
+            angle: -90,
+            position: 'insideLeft',
+            fill: '#59637a',
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fontWeight: 700,
+            letterSpacing: 1,
+            offset: 15
+          }}
+        />
+        <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} content={<CustomTooltip />} />
+        <Bar dataKey="count" radius={[4, 4, 4, 4]}>
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill="#5c7aff" />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
 };
 
 export default HistogramChart;
