@@ -115,7 +115,7 @@ describe('export utility', function () {
       };
 
       const mockSerializeToString = vi.fn().mockReturnValue('<svg></svg>');
-      global.XMLSerializer = vi.fn().mockImplementation(function () {
+      window.XMLSerializer = vi.fn().mockImplementation(function () {
         return {
           serializeToString: mockSerializeToString,
         };
@@ -123,8 +123,8 @@ describe('export utility', function () {
 
       const mockCreateObjectURL = vi.fn().mockReturnValue('blob:http://localhost/test');
       const mockRevokeObjectURL = vi.fn();
-      global.URL.createObjectURL = mockCreateObjectURL;
-      global.URL.revokeObjectURL = mockRevokeObjectURL;
+      window.URL.createObjectURL = mockCreateObjectURL;
+      window.URL.revokeObjectURL = mockRevokeObjectURL;
 
       let onloadCallback = null;
       class MockImage {
@@ -138,7 +138,7 @@ describe('export utility', function () {
           onloadCallback = fn;
         }
       }
-      global.Image = MockImage;
+      window.Image = MockImage;
 
       const mockContext = {
         scale: vi.fn(),
@@ -186,8 +186,8 @@ describe('export utility', function () {
       document.createElement = originalCreateElement;
       document.body.appendChild = originalAppendChild;
       document.body.removeChild = originalRemoveChild;
-      delete global.XMLSerializer;
-      delete global.Image;
+      delete window.XMLSerializer;
+      delete window.Image;
     });
   });
 });
