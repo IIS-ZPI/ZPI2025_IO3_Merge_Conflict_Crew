@@ -80,6 +80,23 @@ export const fetchCurrencyRates = async (
   }
 };
 
+export const fetchAvailableCurrencies = async (table = 'A') => {
+  try {
+    const response = await fetch(`${BASE_URL}/exchangerates/tables/${table}/?format=json`);
+    if (!response.ok) {
+      throw new Error(`Błąd pobierania dostępnych walut z tabeli ${table}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data[0].rates.map(rate => ({
+      currency: rate.currency,
+      code: rate.code
+    }));
+  } catch (error) {
+    console.error('Błąd pobierania walut z NBP:', error);
+    throw error;
+  }
+};
+
 export const useNbpApi = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);

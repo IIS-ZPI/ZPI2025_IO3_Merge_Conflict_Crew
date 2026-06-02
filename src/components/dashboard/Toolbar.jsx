@@ -1,9 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchAvailableCurrencies } from '../../services/nbpApi';
 
 const Toolbar = ({ onGenerate, loading }) => {
   const [baseCurrency, setBaseCurrency] = useState('EUR');
   const [quoteCurrency, setQuoteCurrency] = useState('USD');
   const [timeframe, setTimeframe] = useState('1W');
+  const [currencies, setCurrencies] = useState([]);
+  const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(true);
+
+  useEffect(() => {
+    const loadCurrencies = async () => {
+      try {
+        const data = await fetchAvailableCurrencies('A');
+        setCurrencies(data);
+      } catch (err) {
+        console.error('Failed to load currencies:', err);
+      } finally {
+        setIsLoadingCurrencies(false);
+      }
+    };
+    loadCurrencies();
+  }, []);
+
+  const getEnglishCurrencyName = (code) => {
+    try {
+      return new Intl.DisplayNames(['en'], { type: 'currency' }).of(code);
+    } catch (e) {
+      return code;
+    }
+  };
 
   const handleGenerate = () => {
     if (onGenerate) {
@@ -19,15 +44,18 @@ const Toolbar = ({ onGenerate, loading }) => {
           <select 
             value={baseCurrency}
             onChange={(e) => setBaseCurrency(e.target.value)}
-            className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue"
+            disabled={isLoadingCurrencies}
+            className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue disabled:opacity-50"
           >
-            <option value="USD" className="bg-card-inner text-text-main">US Dollar (USD)</option>
-            <option value="EUR" className="bg-card-inner text-text-main">Euro (EUR)</option>
-            <option value="GBP" className="bg-card-inner text-text-main">British Pound (GBP)</option>
-            <option value="CHF" className="bg-card-inner text-text-main">Swiss Franc (CHF)</option>
-            <option value="JPY" className="bg-card-inner text-text-main">Japanese Yen (JPY)</option>
-            <option value="CZK" className="bg-card-inner text-text-main">Czech Koruna (CZK)</option>
-            <option value="NOK" className="bg-card-inner text-text-main">Norwegian Krone (NOK)</option>
+            {isLoadingCurrencies ? (
+              <option value="EUR" className="bg-card-inner text-text-main">Loading...</option>
+            ) : (
+              currencies.map((c) => (
+                <option key={c.code} value={c.code} className="bg-card-inner text-text-main">
+                  {getEnglishCurrencyName(c.code)} ({c.code})
+                </option>
+              ))
+            )}
           </select>
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">
@@ -35,15 +63,18 @@ const Toolbar = ({ onGenerate, loading }) => {
           <select 
             value={quoteCurrency}
             onChange={(e) => setQuoteCurrency(e.target.value)}
-            className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue"
+            disabled={isLoadingCurrencies}
+            className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue disabled:opacity-50"
           >
-            <option value="USD" className="bg-card-inner text-text-main">US Dollar (USD)</option>
-            <option value="EUR" className="bg-card-inner text-text-main">Euro (EUR)</option>
-            <option value="GBP" className="bg-card-inner text-text-main">British Pound (GBP)</option>
-            <option value="CHF" className="bg-card-inner text-text-main">Swiss Franc (CHF)</option>
-            <option value="JPY" className="bg-card-inner text-text-main">Japanese Yen (JPY)</option>
-            <option value="CZK" className="bg-card-inner text-text-main">Czech Koruna (CZK)</option>
-            <option value="NOK" className="bg-card-inner text-text-main">Norwegian Krone (NOK)</option>
+            {isLoadingCurrencies ? (
+              <option value="USD" className="bg-card-inner text-text-main">Loading...</option>
+            ) : (
+              currencies.map((c) => (
+                <option key={c.code} value={c.code} className="bg-card-inner text-text-main">
+                  {getEnglishCurrencyName(c.code)} ({c.code})
+                </option>
+              ))
+            )}
           </select>
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">
