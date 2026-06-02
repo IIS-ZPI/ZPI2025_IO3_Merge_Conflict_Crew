@@ -25,7 +25,7 @@ const Toolbar = ({ onGenerate, loading }) => {
   const getEnglishCurrencyName = (code) => {
     try {
       return new Intl.DisplayNames(['en'], { type: 'currency' }).of(code);
-    } catch (e) {
+    } catch {
       return code;
     }
   };
