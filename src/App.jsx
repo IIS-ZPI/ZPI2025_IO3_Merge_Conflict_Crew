@@ -4,7 +4,6 @@ import Toolbar from './components/dashboard/Toolbar';
 import SessionSummary from './components/dashboard/SessionSummary';
 import StatisticalMeasures from './components/dashboard/StatisticalMeasures';
 import DistributionAnalysis from './components/dashboard/DistributionAnalysis';
-import NbpApiTester from './components/NbpApiTester';
 import ExportModal from './components/dashboard/ExportModal';
 import { fetchCurrencyRates } from './services/nbpApi';
 import { getDateRange } from './utils/dates';
@@ -87,8 +86,6 @@ function App() {
         quoteCurrency={activeQuoteCurrency}
         timeframe={activeTimeframe}
       />
-
-      <NbpApiTester />
     </MainLayout>
   );
 }
