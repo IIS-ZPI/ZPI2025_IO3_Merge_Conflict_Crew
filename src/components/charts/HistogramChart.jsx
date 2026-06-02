@@ -40,7 +40,7 @@ const HistogramChart = ({ data = [] }) => {
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
         data={data}
-        margin={{ top: 20, right: 10, left: -20, bottom: 45 }}
+        margin={{ top: 20, right: 10, left: 15, bottom: 45 }}
         barCategoryGap="10%"
       >
         <CartesianGrid vertical={false} stroke="#232735" />
