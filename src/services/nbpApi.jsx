@@ -36,7 +36,7 @@ export const fetchCurrencyRates = async (
   const end = new Date(endDate);
 
   if (start > end) {
-    throw new Error('Data początkowa musi być wcześniejsza lub równa dacie końcowej');
+    throw new Error('Start date must be earlier than or equal to end date');
   }
 
   const chunks = chunkDateRange(start, end);
@@ -50,7 +50,7 @@ export const fetchCurrencyRates = async (
             if (response.status === 404) {
               return { rates: [] };
             }
-            throw new Error(`Błąd pobierania danych dla przedziału ${chunk.start} - ${chunk.end}: ${response.statusText}`);
+            throw new Error(`Error fetching data for the period ${chunk.start} - ${chunk.end}: ${response.statusText}`);
           }
           return response.json();
         })
@@ -75,7 +75,24 @@ export const fetchCurrencyRates = async (
       rates: uniqueRates,
     };
   } catch (error) {
-    console.error('Błąd pobierania danych z NBP:', error);
+    console.error('Error fetching data from NBP:', error);
+    throw error;
+  }
+};
+
+export const fetchAvailableCurrencies = async (table = 'A') => {
+  try {
+    const response = await fetch(`${BASE_URL}/exchangerates/tables/${table}/?format=json`);
+    if (!response.ok) {
+      throw new Error(`Error fetching available currencies from table ${table}: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data[0].rates.map(rate => ({
+      currency: rate.currency,
+      code: rate.code
+    }));
+  } catch (error) {
+    console.error('Error fetching currencies from NBP:', error);
     throw error;
   }
 };
@@ -93,7 +110,7 @@ export const useNbpApi = () => {
       setData(result);
       return result;
     } catch (err) {
-      setError(err.message || 'Nie udało się pobrać danych z API NBP');
+      setError(err.message || 'Failed to fetch data from NBP API');
       throw err;
     } finally {
       setLoading(false);
