@@ -17,7 +17,17 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
   useEffect(() => {
     const fetchData = async () => {
       if (!startDate) return;
-      
+
+      const selectedDate = new Date(startDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      if (selectedDate > today) {
+        setError('Cannot analyze future dates. Please select a past date.');
+        setDistributionData([]);
+        return;
+      }
+
       setLoading(true);
       setError(null);
       try {
@@ -98,8 +108,8 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
             )}
             
             {error && (
-              <div className="text-status-red bg-status-red/10 border border-status-red/20 p-3 rounded-lg text-sm flex items-center gap-2 mb-4">
-                <i className="material-icons text-[1.2rem]">error_outline</i>
+              <div className="text-text-muted bg-white/5 border border-border p-3 rounded-lg text-sm flex items-center gap-2 mb-4">
+                <i className="material-icons text-[1.2rem]">info_outline</i>
                 <span>{error}</span>
               </div>
             )}
