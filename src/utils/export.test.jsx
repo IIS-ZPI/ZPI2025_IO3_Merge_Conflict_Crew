@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { computeAnalytics, generateJSON, generateCSV } from './export';
+import { computeAnalytics, generateJSON, generateCSV, exportChartAsPNG } from './export';
 
 describe('export utility', function () {
   beforeEach(function () {
@@ -98,6 +98,96 @@ describe('export utility', function () {
       expect(csvStr).toContain('# METADATA');
       expect(csvStr).toContain('# ANALYTICS');
       expect(csvStr).toContain('# DATASET');
+    });
+  });
+
+  describe('exportChartAsPNG', function () {
+    it('should do nothing if svgElement is not provided', function () {
+      expect(exportChartAsPNG(null)).toBeUndefined();
+    });
+
+    it('should call XMLSerializer, createObjectURL, Image onload, and trigger download', function () {
+      const mockSvg = {
+        getBoundingClientRect: vi.fn().mockReturnValue({ width: 400, height: 200 }),
+        cloneNode: vi.fn().mockReturnValue({
+          setAttribute: vi.fn(),
+        }),
+      };
+
+      const mockSerializeToString = vi.fn().mockReturnValue('<svg></svg>');
+      window.XMLSerializer = vi.fn().mockImplementation(function () {
+        return {
+          serializeToString: mockSerializeToString,
+        };
+      });
+
+      const mockCreateObjectURL = vi.fn().mockReturnValue('blob:http://localhost/test');
+      const mockRevokeObjectURL = vi.fn();
+      window.URL.createObjectURL = mockCreateObjectURL;
+      window.URL.revokeObjectURL = mockRevokeObjectURL;
+
+      let onloadCallback = null;
+      class MockImage {
+        constructor() {
+          onloadCallback = null;
+        }
+        set src(value) {
+          if (onloadCallback) onloadCallback();
+        }
+        set onload(fn) {
+          onloadCallback = fn;
+        }
+      }
+      window.Image = MockImage;
+
+      const mockContext = {
+        scale: vi.fn(),
+        fillStyle: '',
+        fillRect: vi.fn(),
+        drawImage: vi.fn(),
+      };
+      const mockCanvas = {
+        width: 0,
+        height: 0,
+        getContext: vi.fn().mockReturnValue(mockContext),
+        toDataURL: vi.fn().mockReturnValue('data:image/png;base64,abc'),
+      };
+      const mockLink = {
+        href: '',
+        download: '',
+        click: vi.fn(),
+      };
+
+      const originalCreateElement = document.createElement;
+      document.createElement = vi.fn().mockImplementation((tag) => {
+        if (tag === 'canvas') return mockCanvas;
+        if (tag === 'a') return mockLink;
+        return originalCreateElement.call(document, tag);
+      });
+
+      const originalAppendChild = document.body.appendChild;
+      const originalRemoveChild = document.body.removeChild;
+      document.body.appendChild = vi.fn();
+      document.body.removeChild = vi.fn();
+
+      exportChartAsPNG(mockSvg, 'EUR', 'USD', '1W');
+
+      expect(mockSvg.getBoundingClientRect).toHaveBeenCalled();
+      expect(mockSvg.cloneNode).toHaveBeenCalledWith(true);
+      expect(mockSerializeToString).toHaveBeenCalled();
+      expect(mockCreateObjectURL).toHaveBeenCalled();
+      expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
+      expect(mockContext.fillRect).toHaveBeenCalled();
+      expect(mockContext.drawImage).toHaveBeenCalled();
+      expect(mockLink.download).toContain('EUR_USD_1W');
+      expect(mockLink.click).toHaveBeenCalled();
+      expect(mockRevokeObjectURL).toHaveBeenCalledWith('blob:http://localhost/test');
+
+      document.createElement = originalCreateElement;
+      document.body.appendChild = originalAppendChild;
+      document.body.removeChild = originalRemoveChild;
+      delete window.XMLSerializer;
+      delete window.Image;
     });
   });
 });

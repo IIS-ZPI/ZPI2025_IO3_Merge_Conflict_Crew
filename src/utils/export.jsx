@@ -135,3 +135,54 @@ export const triggerDownload = (content, filename, mimeType) => {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
+
+export const exportChartAsPNG = (svgElement, baseCurrency, quoteCurrency, timeframe) => {
+  if (!svgElement) return;
+
+  const bbox = svgElement.getBoundingClientRect();
+  const width = bbox.width || 800;
+  const height = bbox.height || 400;
+
+  const clonedSvg = svgElement.cloneNode(true);
+  clonedSvg.setAttribute('width', width);
+  clonedSvg.setAttribute('height', height);
+  clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+  const svgString = new XMLSerializer().serializeToString(clonedSvg);
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const URLObj = window.URL || window.webkitURL || window;
+  const blobURL = URLObj.createObjectURL(svgBlob);
+
+  const image = new Image();
+  image.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width * 2;
+    canvas.height = height * 2;
+    const context = canvas.getContext('2d');
+    if (context) {
+      context.scale(2, 2);
+      context.fillStyle = '#1e222d';
+      context.fillRect(0, 0, width, height);
+      context.drawImage(image, 0, 0, width, height);
+
+      const today = new Date().toISOString().split('T')[0];
+      const fileName = `Chart_${baseCurrency}_${quoteCurrency}_${timeframe}_${today}.png`;
+      const pngData = canvas.toDataURL('image/png');
+
+      const link = document.createElement('a');
+      link.href = pngData;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    URLObj.revokeObjectURL(blobURL);
+  };
+
+  image.onerror = (err) => {
+    console.error('Failed to load SVG into Image for export:', err);
+    URLObj.revokeObjectURL(blobURL);
+  };
+
+  image.src = blobURL;
+};

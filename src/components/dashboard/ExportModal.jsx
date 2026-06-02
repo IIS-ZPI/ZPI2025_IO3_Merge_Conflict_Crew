@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { generateCSV, generateJSON, triggerDownload } from '../../utils/export';
+import { generateCSV, generateJSON, triggerDownload, exportChartAsPNG } from '../../utils/export';
 
 const ExportModal = ({
   isOpen,
@@ -13,11 +13,24 @@ const ExportModal = ({
   const [exportFormat, setExportFormat] = useState('json');
 
   const today = new Date().toISOString().split('T')[0];
-  const fileName = `${baseCurrency}_${quoteCurrency}_${timeframe}_${exportType}_${today}.${exportFormat}`;
+  const fileName = exportFormat === 'png'
+    ? `Chart_${baseCurrency}_${quoteCurrency}_${timeframe}_${today}.png`
+    : `${baseCurrency}_${quoteCurrency}_${timeframe}_${exportType}_${today}.${exportFormat}`;
 
   if (!isOpen) return null;
 
+  const hasChart = typeof document !== 'undefined' && !!document.querySelector('.recharts-wrapper svg');
+
   const handleExport = () => {
+    if (exportFormat === 'png') {
+      const svgElement = document.querySelector('.recharts-wrapper svg');
+      if (svgElement) {
+        exportChartAsPNG(svgElement, baseCurrency, quoteCurrency, timeframe);
+      }
+      onClose();
+      return;
+    }
+
     const options = {
       baseCurrency,
       quoteCurrency,
@@ -58,7 +71,7 @@ const ExportModal = ({
           </button>
         </div>
         <div className="py-5 space-y-5">
-          <div>
+          <div className={exportFormat === 'png' ? 'opacity-40 pointer-events-none transition-opacity' : 'transition-opacity'}>
             <label className="block text-[0.75rem] font-bold text-text-muted uppercase tracking-[1px] mb-2">
               Select Data to Export
             </label>
@@ -119,7 +132,7 @@ const ExportModal = ({
             <label className="block text-[0.75rem] font-bold text-text-muted uppercase tracking-[1px] mb-2">
               File Format
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-3 gap-3">
               <button
                 type="button"
                 onClick={() => setExportFormat('json')}
@@ -128,7 +141,7 @@ const ExportModal = ({
                   : 'border-border bg-card-inner text-text-muted hover:text-text-main'
                   }`}
               >
-                JSON Format
+                JSON
               </button>
               <button
                 type="button"
@@ -138,7 +151,19 @@ const ExportModal = ({
                   : 'border-border bg-card-inner text-text-muted hover:text-text-main'
                   }`}
               >
-                CSV Format
+                CSV
+              </button>
+              <button
+                type="button"
+                disabled={!hasChart}
+                onClick={() => setExportFormat('png')}
+                className={`flex items-center justify-center py-2.5 rounded-lg border font-semibold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed ${exportFormat === 'png'
+                  ? 'border-accent-blue bg-accent-blue/5 text-accent-blue'
+                  : 'border-border bg-card-inner text-text-muted hover:text-text-main'
+                  }`}
+                title={!hasChart ? "Generate distribution analysis first to export chart" : "Export chart as PNG image"}
+              >
+                PNG (Chart)
               </button>
             </div>
           </div>
