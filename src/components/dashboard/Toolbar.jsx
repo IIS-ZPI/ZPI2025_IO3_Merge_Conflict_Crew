@@ -12,7 +12,10 @@ const Toolbar = ({ onGenerate, loading }) => {
     const loadCurrencies = async () => {
       try {
         const data = await fetchAvailableCurrencies('A');
-        setCurrencies(data);
+        const enriched = data.some((c) => c.code === 'PLN')
+          ? data
+          : [...data, { currency: 'Polish Zloty', code: 'PLN' }];
+        setCurrencies(enriched);
       } catch (err) {
         console.error('Failed to load currencies:', err);
       } finally {
@@ -41,7 +44,7 @@ const Toolbar = ({ onGenerate, loading }) => {
       <div className="flex flex-wrap -mx-3">
         <div className="w-full md:w-1/4 px-3 mb-4">
           <label className="block text-text-muted text-sm mb-1">Base Currency (A)</label>
-          <select 
+          <select
             value={baseCurrency}
             onChange={(e) => setBaseCurrency(e.target.value)}
             disabled={isLoadingCurrencies}
@@ -60,7 +63,7 @@ const Toolbar = ({ onGenerate, loading }) => {
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">
           <label className="block text-text-muted text-sm mb-1">Quote Currency (B)</label>
-          <select 
+          <select
             value={quoteCurrency}
             onChange={(e) => setQuoteCurrency(e.target.value)}
             disabled={isLoadingCurrencies}
@@ -79,7 +82,7 @@ const Toolbar = ({ onGenerate, loading }) => {
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4">
           <label className="block text-text-muted text-sm mb-1">Timeframe</label>
-          <select 
+          <select
             value={timeframe}
             onChange={(e) => setTimeframe(e.target.value)}
             className="w-full bg-transparent border-b border-border text-text-main font-sans py-2 focus:outline-none focus:border-accent-blue"
@@ -93,8 +96,8 @@ const Toolbar = ({ onGenerate, loading }) => {
           </select>
         </div>
         <div className="w-full md:w-1/4 px-3 mb-4 flex items-end">
-          <button 
-            onClick={handleGenerate} 
+          <button
+            onClick={handleGenerate}
             disabled={loading}
             className="btn-custom w-full disabled:opacity-50"
           >

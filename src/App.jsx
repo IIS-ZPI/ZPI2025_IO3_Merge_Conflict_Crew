@@ -30,6 +30,13 @@ function App() {
       if (baseCurrency === quoteCurrency) {
         const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
         setRates(baseData.rates.map(r => ({ effectiveDate: r.effectiveDate, mid: 1 })));
+      } else if (baseCurrency === 'PLN') {
+        const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);
+        const inverted = quoteData.rates.map(r => ({
+          effectiveDate: r.effectiveDate,
+          mid: 1 / r.mid,
+        }));
+        setRates(inverted);
       } else {
         const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
         const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);

@@ -32,17 +32,23 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
       setError(null);
       try {
         const { endDate } = getForwardDateRange(startDate, timeframe);
-        
+
         let rates = [];
         if (baseCurrency === quoteCurrency) {
           const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
           rates = baseData.rates.map(r => ({ effectiveDate: r.effectiveDate, mid: 1 }));
+        } else if (baseCurrency === 'PLN') {
+          const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);
+          rates = quoteData.rates.map(r => ({
+            effectiveDate: r.effectiveDate,
+            mid: 1 / r.mid,
+          }));
         } else {
           const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
           const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);
           rates = calculateCrossRates(baseData, quoteData);
         }
-        
+
         const distData = calculateDistribution(rates);
         setDistributionData(distData);
       } catch (err) {
@@ -53,7 +59,7 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, [baseCurrency, quoteCurrency, startDate, timeframe]);
 
@@ -78,22 +84,22 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
               </div>
               <div className="flex gap-4 items-center">
                 <div className="flex bg-card-bg rounded-lg border border-border overflow-hidden">
-                  <button 
+                  <button
                     onClick={() => setTimeframe('Month')}
                     className={`border-none px-4 py-2 text-[0.85rem] cursor-pointer font-sans font-medium transition-colors ${timeframe === 'Month' ? 'bg-white/5 text-text-main' : 'bg-transparent text-text-muted hover:bg-white/5'}`}
                   >
                     Month
                   </button>
-                  <button 
+                  <button
                     onClick={() => setTimeframe('Quarter')}
                     className={`border-none border-l border-border px-4 py-2 text-[0.85rem] cursor-pointer font-sans font-medium transition-colors ${timeframe === 'Quarter' ? 'bg-white/5 text-text-main' : 'bg-transparent text-text-muted hover:bg-white/5'}`}
                   >
                     Quarter
                   </button>
                 </div>
-                <DatePicker 
-                  placeholder="Start date" 
-                  onChange={(e) => setStartDate(e.target.value)} 
+                <DatePicker
+                  placeholder="Start date"
+                  onChange={(e) => setStartDate(e.target.value)}
                 />
               </div>
             </div>
@@ -106,7 +112,7 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
                 </div>
               </div>
             )}
-            
+
             {error && (
               <div className="text-text-muted bg-white/5 border border-border p-3 rounded-lg text-sm flex items-center gap-2 mb-4">
                 <i className="material-icons text-[1.2rem]">info_outline</i>
