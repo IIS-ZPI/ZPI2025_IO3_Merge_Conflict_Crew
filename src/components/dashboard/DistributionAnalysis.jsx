@@ -43,6 +43,9 @@ const DistributionAnalysis = ({ baseCurrency = 'EUR', quoteCurrency = 'USD' }) =
             effectiveDate: r.effectiveDate,
             mid: 1 / r.mid,
           }));
+        } else if (quoteCurrency === 'PLN') {
+          const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
+          rates = baseData.rates.map(r => ({ effectiveDate: r.effectiveDate, mid: r.mid }));
         } else {
           const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
           const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);

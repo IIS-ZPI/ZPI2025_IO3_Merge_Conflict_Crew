@@ -37,6 +37,9 @@ function App() {
           mid: 1 / r.mid,
         }));
         setRates(inverted);
+      } else if (quoteCurrency === 'PLN') {
+        const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
+        setRates(baseData.rates.map(r => ({ effectiveDate: r.effectiveDate, mid: r.mid })));
       } else {
         const baseData = await fetchCurrencyRates(baseCurrency, startDate, endDate);
         const quoteData = await fetchCurrencyRates(quoteCurrency, startDate, endDate);
