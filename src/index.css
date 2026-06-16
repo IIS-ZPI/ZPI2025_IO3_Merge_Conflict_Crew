@@ -1,36 +1,27 @@
-* {
-  box-sizing: border-box;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bg text-text-main font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
 }
 
-html,
-body,
-#root {
-  min-height: 100%;
-  margin: 0;
-}
+@layer components {
+  .section-title {
+    @apply text-[0.85rem] font-semibold text-text-muted uppercase tracking-[1.5px] mb-[15px] mt-[40px] flex items-center;
+  }
 
-body {
-  min-width: 320px;
-  background: #07142b;
-  color: #ffffff;
-  font-family: Consolas, "Courier New", monospace;
-}
+  .section-box {
+    @apply bg-card-bg rounded-xl border border-border p-6;
+  }
 
-.app-shell {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: #07142b;
-  text-align: center;
-}
-
-.app-title {
-  margin: 0;
-  color: #ffffff;
-  font-size: clamp(2rem, 6vw, 4rem);
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  .btn-custom {
+    @apply bg-accent-blue text-white rounded-md font-semibold tracking-wide h-11 flex items-center justify-center shadow-[0_4px_12px_rgba(92,122,255,0.3)] transition-all duration-300 hover:bg-accent-blueHover hover:shadow-[0_6px_16px_rgba(92,122,255,0.4)];
+  }
 }
