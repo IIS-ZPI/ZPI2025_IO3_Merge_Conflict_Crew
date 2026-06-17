@@ -88,4 +88,4 @@ Testing procedures and bug tracking are documented to ensure high-quality softwa
 
 *   **UAT Scenarios:** [docs/UserAcceptanceTestingScenarios.pdf] — defines the acceptance test cases and criteria.
 *   **UAT Report:** [docs/UserAcceptanceTestingRaport.pdf] — contains execution results and compliance summary.
-*   **Bugfix Log:** Tracked via **GitHub Issues**. Resolved bugfix: *(https://github.com/orgs/IIS-ZPI/projects/36/views/1?pane=issue&itemId=198529808&issue=IIS-ZPI%7CZPI2025_IO3_Merge_Conflict_Crew%7C54)*
+*   **Bugfix Log:** Tracked via **GitHub Issues**. Resolved bugfix: *(https://github.com/IIS-ZPI/ZPI2025_IO3_Merge_Conflict_Crew/issues/54)*
