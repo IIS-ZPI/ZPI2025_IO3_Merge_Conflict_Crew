@@ -51,12 +51,13 @@ The application is automatically deployed to **Vercel** via our CI/CD pipeline w
 All required software engineering specifications, diagrams, and design documents are version-controlled in the [docs/] folder:
 
 *   **[docs/Documentation.pdf]:** Comprehensive project documentation including system architecture, component descriptions, UML diagrams, and requirements specification.
+*   **[docs/UserManual.pdf]:** User manual containing detailed usage instructions and a guide to the application's features.
 
 
 ## IV. Project Backlog and Sprint Planning
 
 Product Backlog, User Stories, and Sprint Planning are managed directly on the team's project board.
-*   **Backlog Board Link:** *(https://github.com/orgs/IIS-ZPI/projects/36)*
+*   **Backlog Board Link:** *(https://github.com/IIS-ZPI/ZPI2025_IO3_Merge_Conflict_Crew/issues?q=is%3Aissue%20state%3Aclosed)*
 *   **Sprint Reviews:** Artifacts, reports from completed sprints, and BurnDown charts can be found in the documentation folder or directly referenced in our repository's Releases.
 
 
